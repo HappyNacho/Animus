@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "379275816523",
+    "firebase_url": "https://animus-7ed99.firebaseio.com",
+    "project_id": "animus-7ed99",
+    "storage_bucket": "animus-7ed99.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379275816523:android:195d9d4105f04636ffa7ce",
+        "android_client_info": {
+          "package_name": "com.happynacho.animus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "379275816523-pbr3v7puilcjviesgjjflsbqoq074uss.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.happynacho.animus",
+            "certificate_hash": "766601e37eb2bb8b4ed80ff5acb6036648f087f0"
+          }
+        },
+        {
+          "client_id": "379275816523-8jqomqqb4hpocgpjkelk70uv209vqa0n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE00vBKGmIhQArpasEXvmN80F9IbDoKQ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "379275816523-8jqomqqb4hpocgpjkelk70uv209vqa0n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
