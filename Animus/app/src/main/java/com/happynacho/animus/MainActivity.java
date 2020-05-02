@@ -6,22 +6,41 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 import com.happynacho.animus.ui.login.Login;
+
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 
 public class MainActivity extends AppCompatActivity {
     private Button logout;
+    private TextView fullName,email,phone;
     private FirebaseAuth fAuth;
-    private ProgressBar progressBar;
+    private FirebaseFirestore fStore;
+    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +53,38 @@ public class MainActivity extends AppCompatActivity {
         catch (NullPointerException e){}
 
         logout = findViewById(R.id.logoutBtn);
+        fullName = findViewById(R.id.userName);
+        email = findViewById(R.id.userEmail);
+        phone = findViewById(R.id.userPhone);
+
         fAuth = FirebaseAuth.getInstance();
-        progressBar = findViewById(R.id.progressBar);
+        fStore = FirebaseFirestore.getInstance();
+
+        userId = fAuth.getCurrentUser().getUid();
+        Log.e(null,"el usuario es "+userId);
+
+
+
+        DocumentReference documentReference = fStore.collection("users").document(userId);
+        Source source = Source.CACHE;
+        documentReference.addSnapshotListener(MainActivity.this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                phone.setText(documentSnapshot.getString("phone"));
+                email.setText(documentSnapshot.getString("email"));
+                fullName.setText(documentSnapshot.getString("fName"));
+                //Log.e(null,documentReference.toString());
+                Log.e(null,"el nombre es "+documentSnapshot.getString("fName"));
+                Log.e(null,"el email es "+documentSnapshot.getString("email"));
+                Log.e(null,"el phone es "+documentSnapshot.getString("phone"));
+
+            }
+        });
+
+
+
+
+
 
         logout.setOnClickListener(new View.OnClickListener(){
             @Override
