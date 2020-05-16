@@ -14,10 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -35,8 +37,8 @@ import javax.annotation.Nullable;
 
 
 public class MainActivity extends AppCompatActivity {
-    private Button logout;
-    private TextView fullName,email,phone;
+    private Button logout,resendCode;
+    private TextView fullName,email,phone,verifyMsg;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
     private String userId;
@@ -57,13 +59,38 @@ public class MainActivity extends AppCompatActivity {
         email = findViewById(R.id.userEmail);
         phone = findViewById(R.id.userPhone);
 
+        resendCode = findViewById(R.id.resendCode);
+        verifyMsg = findViewById(R.id.verifyMsg);
+
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
         userId = fAuth.getCurrentUser().getUid();
-        Log.e(null,"el usuario es "+userId);
+        FirebaseUser user = fAuth.getCurrentUser();
+        //Log.e(null,"el usuario es "+userId);
 
+        if(!user.isEmailVerified()){
+            resendCode.setVisibility(View.VISIBLE);
+            verifyMsg.setVisibility(View.VISIBLE);
 
+            resendCode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    FirebaseUser fuser = fAuth.getCurrentUser();
+                    fuser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(v.getContext(),"Verification Email has been sent",Toast.LENGTH_SHORT);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("TAG","onFailure: Email not sent "+ e.getMessage());
+                        }
+                    });
+                }
+            });
+        }
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
         Source source = Source.CACHE;
