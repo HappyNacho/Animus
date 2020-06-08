@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Register"></activity>
+        <activity android:name=".Note.MainActivityDrawer"></activity>
+        <activity android:name=".Note.EditNoteActivity"></activity>
         <activity android:name=".Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

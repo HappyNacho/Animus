@@ -84,8 +84,7 @@ public class gLogin extends AppCompatActivity {
                             progressBar.setVisibility(View.INVISIBLE);
                         }
                     }
-                });
-            }
+                });            }
         });
         mCreateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
