@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.happynacho.animus.Note.MainActivityDrawer;
 
 public class gLogin extends AppCompatActivity {
     private EditText mEmail, mPassword;
@@ -77,7 +78,7 @@ public class gLogin extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(gLogin.this,"Welcome back!",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), MainActivityDrawer.class));
                         } else {
                             Toast.makeText(gLogin.this,"Error !"+task.getException(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.INVISIBLE);
