@@ -37,4 +37,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // this for Room database
+    implementation 'androidx.room:room-runtime:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
+    implementation 'androidx.paging:paging-runtime:2.1.2'
+    testImplementation 'androidx.room:room-testing:2.2.5'
+
+    // add this line for Material Drawer
+    implementation('com.mikepenz:materialdrawer:7.0.0@aar') {
+        transitive = true
+    }
 }

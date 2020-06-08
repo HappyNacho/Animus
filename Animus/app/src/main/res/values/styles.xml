@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Dark" parent="MaterialDrawerTheme">
+        <item name="colorPrimary">@color/colorPrimary_dark</item>
+        <item name="colorAccent">@color/colorAccent_dark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
 </resources>
