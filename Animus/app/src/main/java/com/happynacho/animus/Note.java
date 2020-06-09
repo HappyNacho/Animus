@@ -1,4 +1,4 @@
-package com.happynacho.animus.Note.model;
+package com.happynacho.animus;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

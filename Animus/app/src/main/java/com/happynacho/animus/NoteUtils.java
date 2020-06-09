@@ -1,4 +1,4 @@
-package com.happynacho.animus.Note.utils;
+package com.happynacho.animus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

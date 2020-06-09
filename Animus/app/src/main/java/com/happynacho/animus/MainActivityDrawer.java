@@ -1,4 +1,4 @@
-package com.happynacho.animus.Note;
+package com.happynacho.animus;
 
 import android.app.TaskStackBuilder;
 import android.content.Context;
@@ -21,15 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.happynacho.animus.Note.adapters.NotesAdapter;
-import com.happynacho.animus.Note.callbacks.MainActionModeCallback;
-import com.happynacho.animus.Note.callbacks.NoteEventListener;
-import com.happynacho.animus.Note.db.NotesDB;
-import com.happynacho.animus.Note.db.NotesDao;
-import com.happynacho.animus.Note.model.Note;
-import com.happynacho.animus.Note.utils.NoteUtils;
-import com.happynacho.animus.R;
-
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -42,8 +33,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.happynacho.animus.Note.EditNoteActivity.NOTE_EXTRA_Key;
 
 public class MainActivityDrawer extends AppCompatActivity implements NoteEventListener, Drawer.OnDrawerItemClickListener {
     private static final String TAG = "MainActivity";
@@ -66,6 +55,10 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
         setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_note);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }catch (NullPointerException e){}
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -221,7 +214,7 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
     public void onNoteClick(Note note) {
         // TODO: 22/07/2018  note clicked : edit note
         Intent edit = new Intent(this, EditNoteActivity.class);
-        edit.putExtra(NOTE_EXTRA_Key, note.getId());
+        edit.putExtra("note_id", note.getId());
         startActivity(edit);
 
     }

@@ -1,7 +1,4 @@
-package com.happynacho.animus.Note.callbacks;
-
-
-import com.happynacho.animus.Note.model.Note;
+package com.happynacho.animus;
 
 /**
  * Created by ixi.Dv on 22/07/2018.

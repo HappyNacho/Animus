@@ -21,7 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.happynacho.animus.Note.MainActivityDrawer;
+
 
 public class gLogin extends AppCompatActivity {
     private EditText mEmail, mPassword;

@@ -1,11 +1,8 @@
-package com.happynacho.animus.Note.callbacks;
+package com.happynacho.animus;
 
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.happynacho.animus.R;
-
 
 /**
  * Created by ixi.Dv on 22/07/2018.

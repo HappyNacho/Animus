@@ -1,13 +1,10 @@
-package com.happynacho.animus.Note.db;
+package com.happynacho.animus;
 
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-
-import com.happynacho.animus.Note.model.Note;
-
 
 /**
  * Created by ixi.Dv on 20/06/2018.

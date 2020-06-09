@@ -1,4 +1,4 @@
-package com.happynacho.animus.Note;
+package com.happynacho.animus;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,11 +10,12 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-
-import com.happynacho.animus.Note.db.NotesDB;
-import com.happynacho.animus.Note.db.NotesDao;
-import com.happynacho.animus.Note.model.Note;
+import com.happynacho.animus.MainActivityDrawer;
+import com.happynacho.animus.Note;
+import com.happynacho.animus.NotesDB;
+import com.happynacho.animus.NotesDao;
 import com.happynacho.animus.R;
+
 
 import java.util.Date;
 
