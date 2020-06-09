@@ -137,11 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        Intent intent = new Intent(getApplicationContext(), MainActivityDrawer.class);
-        intent.putExtra("email",  email.getText());
-        intent.putExtra("Uname",  fullName.getText());
-        startActivity(intent);
-
+        
     }
 
 }
