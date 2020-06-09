@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -121,10 +123,11 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
         stockyItems.add(switchDrawerItem);
 
         // navigation menu header
+
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .addProfiles(new ProfileDrawerItem()
-                        .withEmail("feedback.mrzero@gmail.com")
-                        .withName("ixiDev")
+                        .withEmail(getIntent().getStringExtra("email"))
+                        .withName("Bienvenido")
                         .withIcon(R.mipmap.ic_launcher_round))
                 .withSavedInstance(savedInstanceState)
                 .withHeaderBackground(R.drawable.ic_launcher_background)

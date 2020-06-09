@@ -23,6 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 
+
 public class gLogin extends AppCompatActivity {
     private EditText mEmail, mPassword;
     private Button mLoginBtn;
@@ -54,7 +55,7 @@ public class gLogin extends AppCompatActivity {
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = mEmail.getText().toString().trim();
+                final String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email)){
@@ -78,7 +79,12 @@ public class gLogin extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(gLogin.this,"Welcome back!",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivityDrawer.class));
+
+                            Intent intent = new Intent(getApplicationContext(), MainActivityDrawer.class);
+                            intent.putExtra("email",email);
+
+                            startActivity(intent);
+
                         } else {
                             Toast.makeText(gLogin.this,"Error !"+task.getException(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.INVISIBLE);

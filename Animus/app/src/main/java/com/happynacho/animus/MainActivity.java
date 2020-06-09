@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
         try
         {
@@ -92,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+
+
+
         DocumentReference documentReference = fStore.collection("users").document(userId);
         Source source = Source.CACHE;
         documentReference.addSnapshotListener(MainActivity.this, new EventListener<DocumentSnapshot>() {
@@ -100,13 +104,21 @@ public class MainActivity extends AppCompatActivity {
                 phone.setText(documentSnapshot.getString("phone"));
                 email.setText(documentSnapshot.getString("email"));
                 fullName.setText(documentSnapshot.getString("fName"));
+
+
+
+
                 //Log.e(null,documentReference.toString());
                 Log.e(null,"el nombre es "+documentSnapshot.getString("fName"));
                 Log.e(null,"el email es "+documentSnapshot.getString("email"));
                 Log.e(null,"el phone es "+documentSnapshot.getString("phone"));
 
+
             }
-        });
+        }
+
+        );
+
 
 
 
@@ -124,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+
+        Intent intent = new Intent(getApplicationContext(), MainActivityDrawer.class);
+        intent.putExtra("email",  email.getText());
+        intent.putExtra("Uname",  fullName.getText());
+        startActivity(intent);
 
     }
 
