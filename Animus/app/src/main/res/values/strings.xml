@@ -14,4 +14,13 @@
     <string name="share_note" />
     <string name="delete_notes" />
     <string name="action_settings" />
+    <string name="Email">⠀Email</string>
+    <string name="Password">⠀Password</string>
+    <string name="Login">LOG IN</string>
+    <string name="NewuserCreate">New Here? Create an account</string>
+    <string name="ForgotPassword">Forgot Password?</string>
+    <string name="LoginBanner">Welcome Back!</string>
+    <string name="LoginBanner2">Please login below</string>
+
+
 </resources>
