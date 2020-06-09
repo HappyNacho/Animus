@@ -1,15 +1,20 @@
 package com.happynacho.animus;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.happynacho.animus.MainActivityDrawer;
 import com.happynacho.animus.Note;
 import com.happynacho.animus.NotesDB;
@@ -19,11 +24,15 @@ import com.happynacho.animus.R;
 
 import java.util.Date;
 
+import static android.view.View.*;
+
 public class EditNoteActivity extends AppCompatActivity {
     private EditText inputNote;
     private NotesDao dao;
     private Note temp;
     public static final String NOTE_EXTRA_Key = "note_id";
+    private FloatingActionButton fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,19 @@ public class EditNoteActivity extends AppCompatActivity {
             inputNote.setText(temp.getNoteText());
         } else inputNote.setFocusable(true);
 
+        fab= findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/");
+                startActivityForResult(intent.createChooser(intent,"Seleccione su app"),10);
+            }
+        });
+
+
+
     }
 
     @Override
@@ -62,7 +84,7 @@ public class EditNoteActivity extends AppCompatActivity {
     }
 
     private void onSaveNote() {
-        // TODO: 20/06/2018 Save Note
+
         String text = inputNote.getText().toString();
         if (!text.isEmpty()) {
             long date = new Date().getTime(); // get  system time
