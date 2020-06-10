@@ -52,7 +52,7 @@ public class gLogin extends AppCompatActivity {
         this.mForget        = findViewById(R.id.textViewForget);
 
         if(fAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(),Welcome.class));
+            startActivity(new Intent(getApplicationContext(),MainActivityDrawer.class));
             finish();
         }
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
