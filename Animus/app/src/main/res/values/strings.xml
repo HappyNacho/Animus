@@ -21,6 +21,8 @@
     <string name="ForgotPassword">Forgot Password?</string>
     <string name="LoginBanner">Welcome Back!</string>
     <string name="LoginBanner2">Please login below</string>
+    <string name="Title">Title</string>
+
 
 
 </resources>

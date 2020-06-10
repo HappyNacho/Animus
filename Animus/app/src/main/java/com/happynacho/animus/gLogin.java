@@ -89,7 +89,7 @@ public class gLogin extends AppCompatActivity {
                             startActivity(intent);
 
                         } else {
-                            Toast.makeText(gLogin.this,"Error !"+task.getException(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(gLogin.this,"Error ! Invalid password or user does not exist", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.INVISIBLE);
                         }
                     }
