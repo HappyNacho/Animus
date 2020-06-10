@@ -30,8 +30,6 @@ public class AddNote extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         fStore = FirebaseFirestore.getInstance();
         noteContent = findViewById(R.id.addNoteContent);
@@ -49,13 +47,11 @@ public class AddNote extends AppCompatActivity {
                 String nContent = noteContent.getText().toString();
 
                 if(nTitle.isEmpty() || nContent.isEmpty()){
-                    Toast.makeText(AddNote.this, "Can not Save note with Empty Field.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddNote.this, "You must write something", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 progressBarSave.setVisibility(View.VISIBLE);
-
-                // save note
 
                 DocumentReference docref = fStore.collection("notes").document(user.getUid()).collection("myNotes").document();
                 Map<String,Object> note = new HashMap<>();
