@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +22,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 public class gLogin extends AppCompatActivity {
@@ -29,7 +36,10 @@ public class gLogin extends AppCompatActivity {
     private Button mLoginBtn;
     private TextView mCreateBtn, mForget;
     private FirebaseAuth fAuth;
+    private FirebaseFirestore fStore;
     private ProgressBar progressBar;
+    private NotesDao dao;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +52,8 @@ public class gLogin extends AppCompatActivity {
         }
         catch (NullPointerException e){}
 
+        dao = NotesDB.getInstance(this).notesDao();
+        fStore = FirebaseFirestore.getInstance();
 
         this.mEmail         = findViewById(R.id.editTextEmailLg);
         this.mPassword      = findViewById(R.id.editTextPasswordLg);
@@ -85,6 +97,28 @@ public class gLogin extends AppCompatActivity {
 
                             Intent intent = new Intent(getApplicationContext(), MainActivityDrawer.class);
                             intent.putExtra("email",email);
+                            userId = fAuth.getCurrentUser().getUid();
+                            dao.deleteALL();
+                            Log.d(null, userId);
+
+                            fStore.collection("users").document(userId).collection("myNotes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        List<Note> list = new ArrayList<>();
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            String content = document.getString("content");
+                                            long date = new Date().getTime();
+                                            Note note = new Note(content,date);
+                                            dao.insertNote(note);
+                                            list.add(note);
+                                        }
+                                        Log.d(null, list.toString());
+                                    } else {
+                                        Log.d(null, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
 
                             startActivity(intent);
 
