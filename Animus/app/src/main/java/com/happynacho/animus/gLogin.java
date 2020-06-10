@@ -51,7 +51,10 @@ public class gLogin extends AppCompatActivity {
         this.mCreateBtn     = findViewById(R.id.textViewCreate);
         this.mForget        = findViewById(R.id.textViewForget);
 
-
+        if(fAuth.getCurrentUser() != null){
+            startActivity(new Intent(getApplicationContext(),Welcome.class));
+            finish();
+        }
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

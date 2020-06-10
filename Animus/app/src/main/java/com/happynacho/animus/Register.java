@@ -60,10 +60,7 @@ public class Register extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         progressBar = findViewById(R.id.progressBar);
 
-        if(fAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-            finish();
-        }
+
 
         mRegisterBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -129,7 +126,7 @@ public class Register extends AppCompatActivity {
                                     Log.d("TAG","onFailure "+e.toString());
                                 }
                             });
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(),MainActivityDrawer.class));
                         } else {
                             Toast.makeText(Register.this,"Error !"+task.getException(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.INVISIBLE);
