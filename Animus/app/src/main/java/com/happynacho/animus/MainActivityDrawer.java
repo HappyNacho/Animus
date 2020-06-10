@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,10 +22,15 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -38,6 +45,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivityDrawer extends AppCompatActivity implements NoteEventListener, Drawer.OnDrawerItemClickListener {
@@ -53,6 +61,9 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
     public static final String THEME_Key = "app_theme";
     public static final String APP_PREFERENCES="notepad_settings";
     private int theme;
+    private FirebaseAuth fAuth;
+    private String userId;
+    private FirebaseFirestore fStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +76,34 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
         {
             this.getSupportActionBar().hide();
         }catch (NullPointerException e){}
+        dao = NotesDB.getInstance(this).notesDao();
+        fStore = FirebaseFirestore.getInstance();
+        this.fAuth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        userId = fAuth.getCurrentUser().getUid();
+        dao.deleteALL();
+        Log.d(null, userId);
+
+        fStore.collection("users").document(userId).collection("myNotes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<Note> list = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String content = document.getString("content");
+                        long date = new Date().getTime();
+                        Note note = new Note(content,date);
+                        dao.insertNote(note);
+                        list.add(note);
+                    }
+                    Log.d(null, list.toString());
+                } else {
+                    Log.d(null, "Error getting documents: ", task.getException());
+                }
+            }
+        });
 
         setupNavigation(savedInstanceState, toolbar);
         recyclerView = findViewById(R.id.notes_list);
@@ -81,7 +118,7 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
             }
         });
 
-        dao = NotesDB.getInstance(this).notesDao();
+
     }
 
     private void setupNavigation(Bundle savedInstanceState, Toolbar toolbar) {
