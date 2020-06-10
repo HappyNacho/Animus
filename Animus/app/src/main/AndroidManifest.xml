@@ -15,6 +15,7 @@
         <activity android:name="MainActivityDrawer"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name="EditNoteActivity"></activity>
+        <activity android:name=".AddNote"></activity>
         <activity android:name=".Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

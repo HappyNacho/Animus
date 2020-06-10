@@ -65,11 +65,9 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
         setSupportActionBar(toolbar);
 
         setupNavigation(savedInstanceState, toolbar);
-        // init recyclerView
         recyclerView = findViewById(R.id.notes_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // init fab Button
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +100,6 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
                 .withOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(IDrawerItem drawerItem, CompoundButton buttonView, boolean isChecked) {
-                        // TODO: 02/10/2018 change to darck theme and save it to settings
                         if (isChecked) {
                             settings.edit().putInt(THEME_Key, R.style.AppTheme_Dark).apply();
                         } else {
@@ -112,17 +109,14 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
                         // recreate app or the activity // if it's not working follow this steps
                         // MainActivity.this.recreate();
 
-                        // this lines means wi want to close the app and open it again to change theme
                         TaskStackBuilder.create(MainActivityDrawer.this)
                                 .addNextIntent(new Intent(MainActivityDrawer.this, MainActivityDrawer.class))
                                 .addNextIntent(getIntent()).startActivities();
                     }
                 });
 
-        stockyItems.add(new PrimaryDrawerItem().withName("Settings").withIcon(R.drawable.ic_settings_black_24dp));
         stockyItems.add(switchDrawerItem);
 
-        // navigation menu header
 
         AccountHeader header = new AccountHeaderBuilder().withActivity(this)
                 .addProfiles(new ProfileDrawerItem()
@@ -131,10 +125,9 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
                         .withIcon(R.mipmap.ic_launcher_round))
                 .withSavedInstance(savedInstanceState)
                 .withHeaderBackground(R.drawable.ic_launcher_background)
-                .withSelectionListEnabledForSingleProfile(false) // we need just one profile
+                .withSelectionListEnabledForSingleProfile(false)
                 .build();
 
-        // Navigation drawer
         new DrawerBuilder()
                 .withActivity(this) // activity main
                 .withToolbar(toolbar) // toolbar
@@ -176,29 +169,20 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
         }
     }
 
-    /**
-     * Start EditNoteActivity.class for Create New Note
-     */
     private void onAddNewNote() {
-        startActivity(new Intent(this, EditNoteActivity.class));
+        startActivity(new Intent(this, AddNote.class));
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -215,7 +199,6 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
 
     @Override
     public void onNoteClick(Note note) {
-        // TODO: 22/07/2018  note clicked : edit note
         Intent edit = new Intent(this, EditNoteActivity.class);
         edit.putExtra("note_id", note.getId());
         startActivity(edit);
@@ -224,16 +207,14 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
 
     @Override
     public void onNoteLongClick(Note note) {
-        // TODO: 22/07/2018 note long clicked : delete , share ..
         note.setChecked(true);
         chackedCount = 1;
         adapter.setMultiCheckMode(true);
 
-        // set new listener to adapter intend off MainActivity listener that we have implement
         adapter.setListener(new NoteEventListener() {
             @Override
             public void onNoteClick(Note note) {
-                note.setChecked(!note.isChecked()); // inverse selected
+                note.setChecked(!note.isChecked());
                 if (note.isChecked())
                     chackedCount++;
                 else chackedCount--;
@@ -243,7 +224,6 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
                 } else actionModeCallback.changeShareItemVisible(true);
 
                 if (chackedCount == 0) {
-                    //  finish multi select mode wen checked count =0
                     actionModeCallback.getAction().finish();
                 }
 
@@ -279,10 +259,7 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
     }
 
     private void onShareNote() {
-        // TODO: 22/07/2018  we need share just one Note not multi
-
         Note note = adapter.getCheckedNotes().get(0);
-        // TODO: 22/07/2018 do your logic here to share note ; on social or something else
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         String notetext = note.getNoteText() + "\n\n Create on : " +
@@ -295,14 +272,11 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
     }
 
     private void onDeleteMultiNotes() {
-        // TODO: 22/07/2018 delete multi notes
-
         List<Note> chackedNotes = adapter.getCheckedNotes();
         if (chackedNotes.size() != 0) {
             for (Note note : chackedNotes) {
                 dao.deleteNote(note);
             }
-            // refresh Notes
             loadNotes();
             Toast.makeText(this, chackedNotes.size() + " Note(s) Delete successfully !", Toast.LENGTH_SHORT).show();
         } else Toast.makeText(this, "No Note(s) selected", Toast.LENGTH_SHORT).show();
@@ -314,12 +288,10 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
     public void onActionModeFinished(ActionMode mode) {
         super.onActionModeFinished(mode);
 
-        adapter.setMultiCheckMode(false); // uncheck the notes
-        adapter.setListener(this); // set back the old listener
+        adapter.setMultiCheckMode(false);
+        adapter.setListener(this);
         fab.setVisibility(View.VISIBLE);
     }
-
-    // swipe to right or to left te delete
     private ItemTouchHelper swipeToDeleteHelper = new ItemTouchHelper(
             new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                 @Override
@@ -329,10 +301,7 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
 
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    // TODO: 28/09/2018 delete note when swipe
-
                     if (notes != null) {
-                        // get swiped note
                         Note swipedNote = notes.get(viewHolder.getAdapterPosition());
                         if (swipedNote != null) {
                             swipeToDelete(swipedNote, viewHolder);
@@ -360,7 +329,6 @@ public class MainActivityDrawer extends AppCompatActivity implements NoteEventLi
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // TODO: 28/09/2018  Undo swipe and restore swipedNote
                         recyclerView.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
 
 
