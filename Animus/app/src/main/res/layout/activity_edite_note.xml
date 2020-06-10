@@ -23,7 +23,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/edit_note_activity_toolbar"
         android:layout_gravity="top"
-        android:layout_marginTop="-60dp"
+        android:layout_marginTop="0dp"
         android:ems="10"
         android:gravity="top"
         android:hint="@string/whats_in_your_mind"
